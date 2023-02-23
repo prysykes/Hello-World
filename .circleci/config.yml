@@ -24,8 +24,8 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - run:
-          name: "Echo ENV"
-          command: echo ${my_env_var}
+          name: "Echo environment variables"
+          command: echo $my_env_var
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
