@@ -9,8 +9,8 @@ commands:
     description: "A very simple command for demostration purposes"
     parameters:
       to:
-        type: string
-        default: "World"
+        type: env_var_name
+        default: CIRCLE_WORKFLOW_ID
     steps:
       - run: echo "Hello <<parameters.to>>"
 executors:
@@ -39,7 +39,7 @@ jobs:
     executor: my-executor
     steps:
       - print_pipeline_id:
-        to: $CIRCLE_WORKFLOW_ID
+          to: CIRCLE_WORKFLOW_ID
 
           
 # Invoke jobs via workflows
