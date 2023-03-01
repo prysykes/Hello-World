@@ -12,7 +12,7 @@ commands:
         type: env_var_name
         default: CIRCLE_WORKFLOW_ID
     steps:
-      - run: echo "Hello ${<<parameters.to>>}"
+      - run: echo "This is the circle CI work flow ID ${<<parameters.to>>}"
 executors:
   my-executor:
     docker:
@@ -24,7 +24,7 @@ jobs:
     steps:
       - run: echo "Hello world!" > ~/output.txt  
       - persist_to_workspace:
-          root: ~/
+          root: //
           paths:
             - output.txt
   
@@ -40,6 +40,15 @@ jobs:
     steps:
       - print_pipeline_id:
           to: CIRCLE_WORKFLOW_ID
+
+  on_failure:
+    executor: my-executor
+    steps:
+      - run:
+          name: Failure
+          command: echo "The system has failed"
+          when: on_fail
+
 
           
 # Invoke jobs via workflows
