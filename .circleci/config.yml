@@ -16,16 +16,16 @@ jobs:
       - run: mkdir -p workspace
       - run: echo "Hello world!" > workspace/output.txt  
       - persist_to_workspace:
-          root: workspace
+          root: ~/
           paths:
-            - /workspace
+            - output.txt
   
   print_output_file:
     executor: my-executor
     steps:
       - attach_workspace:
-          at: /tmp/workspace
-      - run: cat /tmp/workspace/output.txt
+          at: ~/
+      - run: cat ~/output.txt
           
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
