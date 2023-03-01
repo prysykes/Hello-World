@@ -4,37 +4,38 @@ version: 2.1
 
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
+executors:
+  my-executor:
+    docker:
+      - image: circleci/node:13.8.0
+    working_directory: /tmp
 jobs:
-  print-hello:
-    docker:
-      - image: circleci/node:13.8.0
+  save_hello_world_output:
+    executor: my-executor
     steps:
-      - run:
-          name: "Hello"
-          command: "echo Hello,"
-  print-world:
-      docker:
-        - image: circleci/node:13.8.0
-      steps:
-        - run:
-            name: "World"
-            command: "echo world!"
-  print_env_name:
-    docker:
-      - image: circleci/node:13.8.0
+      - run: mkdir -p workspace
+      - run: echo "Hello world!" > workspace/output.txt  
+      - persist_to_workspace:
+          root: workspace
+          paths:
+            - /workspace
+  
+  print_output_file:
+    executor: my-executor
     steps:
-      - run:
-          name: "Echo environment variables"
-          command: echo $my_env_var
-
+      - attach_workspace:
+          at: /tmp/workspace
+      - run: cat /tmp/workspace/output.txt
+          
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
   alx-udacity-workflow:
     jobs:
-      - print-hello
-      - print-world:
-          requires: 
-            - print-hello
-      - print_env_name
+      - save_hello_world_output
+      - print_output_file:
+          requires:
+            - save_hello_world_output
+
+      
 
