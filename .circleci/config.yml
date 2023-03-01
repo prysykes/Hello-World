@@ -14,7 +14,8 @@ jobs:
     executor: my-executor
     steps:
       - run: mkdir -p workspace
-      - run: echo "Hello world!" > workspace/output.txt  
+      - run: chdir /workspace
+      - run: echo "Hello world!" > output.txt  
       - persist_to_workspace:
           root: ~/
           paths:
