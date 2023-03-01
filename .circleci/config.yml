@@ -8,24 +8,23 @@ executors:
   my-executor:
     docker:
       - image: circleci/node:13.8.0
-    working_directory: ~/tmp
+    
 jobs:
   save_hello_world_output:
     executor: my-executor
     steps:
-      - run: mkdir -p workspace
-      - run: echo "Hello world!" > /workspace/papi.txt  
+      - run: echo "Hello world!" > ~/output.txt  
       - persist_to_workspace:
-          root: ~/tmp/workspace
+          root: ~/
           paths:
-            - papi.txt
+            - output.txt
   
   print_output_file:
     executor: my-executor
     steps:
       - attach_workspace:
-          at: ~/tmp/workspace
-      - run: cat ~/papi.txt
+          at: ~/
+      - run: cat ~/output.txt
           
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
