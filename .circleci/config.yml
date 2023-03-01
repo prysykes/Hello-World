@@ -61,6 +61,7 @@ workflows:
           requires:
             - save_hello_world_output
       - print_env_from_command
+      - on_failure
 
       
 
