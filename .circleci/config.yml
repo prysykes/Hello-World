@@ -24,7 +24,7 @@ jobs:
     steps:
       - run: echo "Hello world!" > ~/output.txt  
       - persist_to_workspace:
-          root: ~/
+          root: //
           paths:
             - output.txt
   
@@ -34,21 +34,16 @@ jobs:
       - attach_workspace:
           at: ~/
       - run: cat ~/output.txt
+      - run:
+          name: on fail
+          command: echo "This job has failed"
+          when: on_fail
   
   print_env_from_command:
     executor: my-executor
     steps:
       - print_pipeline_id:
           to: CIRCLE_WORKFLOW_ID
-
-  on_failure:
-    executor: my-executor
-    steps:
-      - run:
-          name: Failure
-          command: echo "The system has failed"
-          when: on_fail
-
 
           
 # Invoke jobs via workflows
@@ -61,7 +56,6 @@ workflows:
           requires:
             - save_hello_world_output
       - print_env_from_command
-      - on_failure
 
       
 
