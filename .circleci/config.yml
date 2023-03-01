@@ -8,14 +8,12 @@ executors:
   my-executor:
     docker:
       - image: circleci/node:13.8.0
-    working_directory: /tmp
+    
 jobs:
   save_hello_world_output:
     executor: my-executor
     steps:
-      - run: mkdir -p workspace
-      - run: chdir /workspace
-      - run: echo "Hello world!" > output.txt  
+      - run: echo "Hello world!" > ~/output.txt  
       - persist_to_workspace:
           root: ~/
           paths:
